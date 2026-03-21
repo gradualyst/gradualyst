@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gradualyst Academy of Professional Learning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green-dark: #1a4731;
+      --green-mid: #2d6a4f;
+      --green-accent: #40916c;
+      --gold: #d4a017;
+      --bg: #f4f6f2;
+      --white: #ffffff;
+      --text: #1a1a1a;
+      --muted: #555;
+      --footer-bg: #1a2e23;
+      --font-display: 'Fraunces', serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--white); border-bottom: 1px solid #e0e6df;
+      padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 175px;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 16px; text-decoration: none; }
+    .nav-logo { width: 160px; height: 160px; flex-shrink: 0; }
+    .nav-logo img { width: 100%; height: 100%; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
+    .nav-brand-text { font-weight: 600; font-size: 0.9rem; color: var(--green-dark); line-height: 1.2; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text); font-size: 0.9rem; font-weight: 500; transition: color .2s; cursor: pointer; }
+    .nav-links a:hover { color: var(--green-accent); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--green-dark); border-radius: 2px; }
+    .mobile-menu { display: none; flex-direction: column; background: var(--white); border-top: 1px solid #e0e6df; padding: 1rem 5%; gap: .8rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { text-decoration: none; color: var(--text); font-weight: 500; font-size: 1rem; padding: .5rem 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+
+    /* ── HERO ── */
+    .hero { padding: 72px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: #e8f0ec; border-radius: 20px; padding: 6px 14px; font-size: 0.82rem; color: var(--green-dark); font-weight: 500; margin-bottom: 1.4rem; }
+    .hero-badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--green-accent); }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(2.2rem, 4.5vw, 3.6rem); font-weight: 900; line-height: 1.05; margin-bottom: 1.2rem; }
+    .hero p { color: var(--muted); font-size: 1rem; max-width: 420px; margin-bottom: 2rem; }
+    .hero-img { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: #c8d8ce; }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ── BUTTONS ── */
+    .btn-primary { display: inline-block; background: var(--green-dark); color: var(--white); padding: 13px 26px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.93rem; transition: background .2s, transform .15s; border: none; cursor: pointer; font-family: var(--font-body); }
+    .btn-primary:hover { background: var(--green-mid); transform: translateY(-1px); }
+    .btn-outline-white { display: inline-block; border: 2px solid var(--white); color: var(--white); padding: 12px 26px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.93rem; transition: background .2s, color .2s; cursor: pointer; background: transparent; font-family: var(--font-body); }
+    .btn-outline-white:hover { background: var(--white); color: var(--text); }
+
+    /* ── LEAP ── */
+    .leap-section { background: #ecf0eb; padding: 72px 5%; }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 700; text-align: center; margin-bottom: .5rem; }
+    .section-underline { width: 48px; height: 3px; background: var(--gold); margin: 0 auto 3rem; border-radius: 2px; }
+    .leap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; max-width: 1200px; margin: 0 auto; }
+    .leap-card { background: var(--white); border-radius: 14px; padding: 1.8rem 1.4rem; box-shadow: 0 2px 12px rgba(0,0,0,.05); transition: transform .2s, box-shadow .2s; }
+    .leap-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+    .leap-icon { width: 48px; height: 48px; background: var(--green-dark); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .leap-icon svg { width: 24px; height: 24px; stroke: var(--white); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .leap-card h3 { color: var(--green-accent); font-weight: 700; margin-bottom: .5rem; font-size: 1rem; }
+    .leap-card p { color: var(--muted); font-size: 0.88rem; }
+
+    /* ── CTA BANNER ── */
+    .cta-banner { background: #3a3a35; padding: 72px 5%; text-align: center; }
+    .cta-banner h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 900; color: var(--white); margin-bottom: 1rem; }
+    .cta-banner p { color: rgba(255,255,255,.75); font-size: 1rem; margin: 0 auto 2rem; max-width: 480px; }
+
+    /* ── SERVICES HERO ── */
+    .services-hero { padding: 72px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .services-badge { display: inline-block; background: #e8f0ec; border-radius: 20px; padding: 6px 14px; font-size: 0.82rem; color: var(--green-dark); font-weight: 500; margin-bottom: 1.2rem; }
+    .services-hero h1 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; line-height: 1.1; margin-bottom: 1rem; }
+    .services-hero h1 span { color: var(--green-accent); }
+    .services-hero p { color: var(--muted); font-size: 1rem; max-width: 420px; }
+    .services-hero-img { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: #c8d8ce; }
+    .services-hero-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ── SOLUTIONS ── */
+    .solutions-section { padding: 60px 5% 72px; }
+    .solutions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; max-width: 1200px; margin: 0 auto; }
+    .sol-card { background: var(--white); border-radius: 14px; padding: 2rem 1.6rem; box-shadow: 0 2px 12px rgba(0,0,0,.05); transition: transform .2s, box-shadow .2s; }
+    .sol-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+    .sol-icon { width: 44px; height: 44px; background: #e8f0ec; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .sol-icon svg { width: 22px; height: 22px; stroke: var(--green-dark); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .sol-card h3 { font-weight: 700; margin-bottom: .6rem; font-size: 1rem; }
+    .sol-card p { color: var(--muted); font-size: 0.88rem; }
+
+    /* ── ABOUT HERO ── */
+    .about-hero { position: relative; height: 280px; overflow: hidden; }
+    .about-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .about-hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(26,47,35,.8), rgba(26,47,35,.35)); display: flex; flex-direction: column; justify-content: center; padding: 0 5%; }
+    .about-hero-overlay h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; color: var(--white); margin-bottom: .6rem; }
+    .about-hero-overlay p { color: rgba(255,255,255,.85); font-size: 1rem; max-width: 520px; }
+
+    /* ── VISION ── */
+    .vision-section { padding: 72px 5%; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .section-tag { display: inline-flex; align-items: center; gap: 6px; background: #e8f0ec; border-radius: 20px; padding: 5px 12px; font-size: 0.78rem; color: var(--green-dark); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 1.2rem; }
+    .vision-mission h2 { font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 700; margin-bottom: 1.5rem; }
+    .vm-block { margin-bottom: 1.8rem; }
+    .vm-block h3 { color: var(--green-accent); font-weight: 700; margin-bottom: .5rem; }
+    .vm-block p { color: var(--muted); font-size: 0.95rem; }
+    .methodology-card { background: var(--white); border-radius: 16px; padding: 2rem; box-shadow: 0 2px 16px rgba(0,0,0,.06); }
+    .methodology-card h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; margin-bottom: .8rem; }
+    .methodology-card > p { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.4rem; }
+    .method-item { display: flex; gap: 12px; margin-bottom: 1.2rem; }
+    .method-check { width: 24px; height: 24px; background: var(--green-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .method-check svg { width: 12px; height: 12px; stroke: var(--white); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .method-item strong { display: block; font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+    .method-item p { color: var(--muted); font-size: 0.88rem; margin: 0; }
+
+    /* ── CONTACT ── */
+    .contact-section { padding: 72px 5%; background: var(--bg); }
+    .contact-section h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 700; text-align: center; margin-bottom: .6rem; }
+    .contact-subtitle { text-align: center; color: var(--muted); font-size: 0.95rem; margin-bottom: 3rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1000px; margin: 0 auto; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.88rem; font-weight: 600; }
+    .form-group input, .form-group textarea { border: 1px solid #d0d8d2; border-radius: 8px; padding: 10px 14px; font-family: var(--font-body); font-size: 0.9rem; background: var(--white); color: var(--text); transition: border-color .2s; resize: vertical; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--green-accent); }
+    .form-group textarea { min-height: 110px; }
+    .contact-info { display: flex; flex-direction: column; gap: 1rem; }
+    .info-card { background: var(--white); border-radius: 12px; padding: 1rem 1.2rem; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+    .info-icon { width: 40px; height: 40px; background: var(--green-dark); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .info-icon svg { width: 18px; height: 18px; stroke: var(--white); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .info-card strong { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+    .info-card span { font-size: 0.88rem; color: var(--muted); }
+    .map-box { border-radius: 12px; overflow: hidden; height: 120px; }
+    .map-box iframe { width: 100%; height: 100%; border: 0; }
+    .form-success { display: none; background: #d4edda; border: 1px solid #b8dfc2; border-radius: 8px; padding: 14px 18px; color: var(--green-dark); font-weight: 600; font-size: 0.93rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--footer-bg);
+      padding: 44px 5% 26px;
+      font-family: var(--font-body);
+    }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;
+    }
+    .footer-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .footer-logo-circle {
+      width: 120px; height: 120px;
+      flex-shrink: 0;
+    }
+    .footer-logo-circle img { width: 100%; height: 100%; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
+    .footer-brand-name { font-size: 0.93rem; font-weight: 600; color: #fff; cursor: pointer; }
+    .footer-tagline { font-size: 0.83rem; color: rgba(255,255,255,.45); font-style: italic; max-width: 280px; line-height: 1.55; }
+    .footer-contact-title { font-size: 0.72rem; letter-spacing: .1em; text-transform: uppercase; color: #fff; margin-bottom: 10px; font-weight: 600; }
+    .footer-ci { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; font-size: 0.83rem; color: rgba(255,255,255,.65); }
+    .footer-ci svg { width: 13px; height: 13px; stroke: rgba(255,255,255,.45); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,.1); margin-bottom: 18px; }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,.3); }
+
+    /* ── TOOLTIP LINKS ── */
+    .footer-links { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; list-style: none; }
+
+    .fl-wrap { position: relative; display: inline-block; }
+
+    .fl-btn {
+      font-size: 0.83rem; font-weight: 500;
+      color: rgba(255,255,255,.5);
+      background: none; border: none; padding: 0;
+      cursor: pointer; font-family: var(--font-body);
+      transition: color .2s ease; white-space: nowrap;
+    }
+    .fl-wrap:hover .fl-btn,
+    .fl-wrap:focus-within .fl-btn { color: #fff; }
+
+    .fl-tooltip {
+      position: absolute;
+      bottom: calc(100% + 13px);
+      width: 250px; max-width: 250px;
+      background: #fff; color: #1a1a1a;
+      border-radius: 10px; padding: 13px 15px;
+      font-size: 0.78rem; line-height: 1.6;
+      pointer-events: none;
+      opacity: 0; transform: translateY(6px);
+      transition: opacity .22s ease, transform .22s ease;
+      z-index: 300;
+      box-shadow: 0 4px 6px rgba(0,0,0,.07), 0 10px 28px rgba(0,0,0,.18);
+    }
+    .fl-wrap:hover .fl-tooltip,
+    .fl-wrap:focus-within .fl-tooltip { opacity: 1; transform: translateY(0); }
+
+    .fl-pos-first  { left: 0; }
+    .fl-pos-middle { left: 50%; transform: translateX(-50%) translateY(6px); }
+    .fl-pos-last   { right: 0; }
+    .fl-wrap:hover .fl-pos-middle,
+    .fl-wrap:focus-within .fl-pos-middle { transform: translateX(-50%) translateY(0); }
+
+    .fl-arrow {
+      position: absolute; bottom: -7px;
+      width: 14px; height: 8px;
+      background: #fff; clip-path: polygon(0 0, 100% 0, 50% 100%);
+    }
+    .fl-pos-first .fl-arrow  { left: 16px; }
+    .fl-pos-middle .fl-arrow { left: 50%; transform: translateX(-50%); }
+    .fl-pos-last .fl-arrow   { right: 16px; }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+    .anim { animation: fadeUp .55s ease both; }
+    .d1 { animation-delay:.1s; } .d2 { animation-delay:.2s; }
+    .d3 { animation-delay:.3s; } .d4 { animation-delay:.4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .leap-grid { grid-template-columns: repeat(2,1fr); }
+      .solutions-grid { grid-template-columns: repeat(2,1fr); }
+      .hero, .services-hero { grid-template-columns: 1fr; }
+      .hero-img, .services-hero-img { order: -1; }
+      .vision-section { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .footer-top { flex-direction: column; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .leap-grid { grid-template-columns: 1fr; }
+      .solutions-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero { padding: 40px 5%; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      .footer-links { gap: 20px; }
+      .fl-tooltip { width: 210px; font-size: 0.76rem; }
+      .fl-pos-middle { left: 0; transform: translateY(6px); }
+      .fl-wrap:hover .fl-pos-middle,
+      .fl-wrap:focus-within .fl-pos-middle { transform: translateY(0); }
+      .fl-pos-middle .fl-arrow { left: 16px; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-brand" onclick="showPage('home')" style="cursor:pointer;">
+    <div class="nav-logo">
+      <img src="D:\gradualyst website\gradualyst logo.png" alt="Gradualyst Logo" />
+    </div>
+    <div class="nav-brand-text">Gradualyst Academy of<br>Professional Learning</div>
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Home</a></li>
+    <li><a onclick="showPage('services')">Services</a></li>
+    <li><a onclick="showPage('about')">About</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('home');closeMenu()">Home</a>
+  <a onclick="showPage('services');closeMenu()">Services</a>
+  <a onclick="showPage('about');closeMenu()">About</a>
+</div>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page active" id="page-home">
+  <section style="background:var(--bg);">
+    <div class="hero">
+      <div class="anim">
+        <div class="hero-badge">Empowering Future Technologists</div>
+        <h1>Gradualyst Academy of Professional Learning</h1>
+        <p>A learner-focused academy helping individuals master technology skills through personalized learning assistance and practical exposure.</p>
+        <a href="https://wa.me/qr/D7OL45XDICFTM1" target="_blank" rel="noopener noreferrer" class="btn-primary">Request Learning Consultation</a>
+      </div>
+      <div class="hero-img anim d2">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&q=80" alt="Students learning" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <section class="leap-section">
+    <h2 class="section-title anim">Gradualyst Learning Methodology (LEAP)</h2>
+    <div class="section-underline"></div>
+    <div class="leap-grid">
+      <div class="leap-card anim d1">
+        <div class="leap-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h3>Learn</h3>
+        <p>Foundational knowledge building through expert-led structured curriculum.</p>
+      </div>
+      <div class="leap-card anim d2">
+        <div class="leap-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <h3>Enable</h3>
+        <p>Practical skill empowerment with hands-on labs and real-world tools.</p>
+      </div>
+      <div class="leap-card anim d3">
+        <div class="leap-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Assist</h3>
+        <p>Guided support systems and mentorship to navigate complex challenges.</p>
+      </div>
+      <div class="leap-card anim d4">
+        <div class="leap-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3>Personalize</h3>
+        <p>Tailored learning paths customized to your career goals and pace.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <h2>Start Your Learning Journey with Gradualyst</h2>
+    <p>Unlock your potential with expert guidance tailored to your specific academic and professional needs.</p>
+    <a href="https://wa.me/qr/D7OL45XDICFTM1" target="_blank" rel="noopener noreferrer" class="btn-outline-white">Request Learning Consultation</a>
+  </section>
+
+  <!-- FOOTER HOME -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo-row">
+            <div class="footer-logo-circle"><img src="D:\gradualyst website\gradualyst logo.png" alt="Gradualyst Logo" /></div>
+            <span class="footer-brand-name" onclick="showPage('home')">Gradualyst Academy</span>
+          </div>
+          <p class="footer-tagline">"Where knowledge meets guidance, because every learner deserves direction."</p>
+        </div>
+        <div>
+          <p class="footer-contact-title">Contact</p>
+          <div class="footer-ci"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Chennai, Tamil Nadu, India</div>
+          <div class="footer-ci"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>gradualyst@gmail.com</div>
+          <div class="footer-ci"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.97-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+91 8122178878</div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 Gradualyst Academy. All rights reserved.</span>
+        <ul class="footer-links">
+          <li class="fl-wrap">
+            <button class="fl-btn">Privacy Policy</button>
+            <div class="fl-tooltip fl-pos-first">Gradualyst respects the privacy of all learners. Personal information collected through forms or communication is used only for academic coordination, learning assistance, and communication purposes. We do not share personal data with third parties without consent.<div class="fl-arrow"></div></div>
+          </li>
+          <li class="fl-wrap">
+            <button class="fl-btn">Terms of Service</button>
+            <div class="fl-tooltip fl-pos-middle">By enrolling in Gradualyst programs, learners agree to follow the academy's learning framework and policies. Gradualyst provides learning assistance and mentorship but does not guarantee certifications, placements, or job opportunities.<div class="fl-arrow"></div></div>
+          </li>
+          <li class="fl-wrap">
+            <button class="fl-btn">Careers</button>
+            <div class="fl-tooltip fl-pos-last">Gradualyst welcomes educators, mentors, and technology professionals passionate about supporting learners. Interested candidates can reach out with their profile or resume to explore opportunities in mentorship, research, and academic support.<div class="fl-arrow"></div></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<div class="page" id="page-services">
+  <section style="background:var(--bg);">
+    <div class="services-hero">
+      <div class="anim">
+        <span class="services-badge">Our Expertise</span>
+        <h1>Empowering Academic &amp; <span>Technical Excellence</span></h1>
+        <p>Comprehensive support tailored for students, researchers, and institutions. We provide the tools and mentorship needed to bridge the gap between theory and practical innovation.</p>
+      </div>
+      <div class="services-hero-img anim d2">
+        <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=700&q=80" alt="Technical excellence" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <section class="solutions-section">
+    <h2 class="section-title anim">Specialized Solutions</h2>
+    <div class="section-underline"></div>
+    <div class="solutions-grid">
+      <div class="sol-card anim d1">
+        <div class="sol-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h3>School Programs</h3>
+        <p>Holistic development programs designed for K-12 and higher education institutions to foster critical thinking and practical skills from an early age.</p>
+      </div>
+      <div class="sol-card anim d2">
+        <div class="sol-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h3>Engineering &amp; Project Support</h3>
+        <p>Technical guidance and hands-on assistance for complex engineering student projects, including prototyping, simulation, and implementation.</p>
+      </div>
+      <div class="sol-card anim d3">
+        <div class="sol-icon"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0h10M9 14H3"/><path d="M9 14v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4"/></svg></div>
+        <h3>Academic &amp; Lab Support</h3>
+        <p>State-of-the-art laboratory assistance and academic tutoring services to ensure excellence in both theoretical understanding and practical application.</p>
+      </div>
+      <div class="sol-card anim d1">
+        <div class="sol-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+        <h3>Research &amp; Patents</h3>
+        <p>End-to-end support for innovative research projects, including technical documentation, patent filing, and protection of intellectual property.</p>
+      </div>
+      <div class="sol-card anim d2">
+        <div class="sol-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <h3>PhD &amp; Research Support</h3>
+        <p>Expert mentorship for doctoral candidates, assistance with data analysis, literature reviews, and preparation for scholarly publications.</p>
+      </div>
+      <div class="sol-card anim d3">
+        <div class="sol-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg></div>
+        <h3>IT &amp; Digital Services</h3>
+        <p>Cutting-edge digital transformation and IT infrastructure setup for academic institutions, including LMS and custom software solutions.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <h2>Ready to elevate your academic journey?</h2>
+    <p>Join hundreds of students and institutions achieving technical excellence with Gradualyst Academy. Let's build your future together.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe685llzuhxe7HXyxb5L5bgG0E8c7otGP1FbURGBryvaDo5ew/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="btn-outline-white">Schedule a Consultation</a>
+  </section>
+
+  <!-- FOOTER SERVICES -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo-row">
+            <div class="footer-logo-circle"><img src="D:\gradualyst website\gradualyst logo.png" alt="Gradualyst Logo" /></div>
+            <span class="footer-brand-name" onclick="showPage('home')">Gradualyst Academy</span>
+          </div>
+          <p class="footer-tagline">Bridging the gap between education and innovation through specialized technical support and mentorship.</p>
+        </div>
+        <div>
+          <p class="footer-contact-title">Contact</p>
+          <div class="footer-ci"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Chennai, Tamil Nadu, India</div>
+          <div class="footer-ci"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>gradualyst@gmail.com</div>
+          <div class="footer-ci"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.97-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+91 8122178878</div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 Gradualyst Academy. All rights reserved.</span>
+        <ul class="footer-links">
+          <li class="fl-wrap">
+            <button class="fl-btn">Privacy Policy</button>
+            <div class="fl-tooltip fl-pos-first">Gradualyst respects the privacy of all learners. Personal information collected through forms or communication is used only for academic coordination, learning assistance, and communication purposes. We do not share personal data with third parties without consent.<div class="fl-arrow"></div></div>
+          </li>
+          <li class="fl-wrap">
+            <button class="fl-btn">Terms of Service</button>
+            <div class="fl-tooltip fl-pos-middle">By enrolling in Gradualyst programs, learners agree to follow the academy's learning framework and policies. Gradualyst provides learning assistance and mentorship but does not guarantee certifications, placements, or job opportunities.<div class="fl-arrow"></div></div>
+          </li>
+          <li class="fl-wrap">
+            <button class="fl-btn">Careers</button>
+            <div class="fl-tooltip fl-pos-last">Gradualyst welcomes educators, mentors, and technology professionals passionate about supporting learners. Interested candidates can reach out with their profile or resume to explore opportunities in mentorship, research, and academic support.<div class="fl-arrow"></div></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80" alt="Modern workspace" loading="lazy" />
+    <div class="about-hero-overlay">
+      <h1>Empowering the Future of Industry</h1>
+      <p>Bridging the gap between traditional education and real-world professional excellence.</p>
+    </div>
+  </div>
+
+  <div class="vision-section">
+    <div class="vision-mission anim">
+      <div class="section-tag">Our Purpose</div>
+      <h2>Vision &amp; Mission</h2>
+      <div class="vm-block">
+        <h3>Vision</h3>
+        <p>To empower every learner with the skills and mindset needed to bridge the gap between education and industry excellence, creating a global workforce of innovative problem solvers.</p>
+      </div>
+      <div class="vm-block">
+        <h3>Mission</h3>
+        <p>Our mission is to provide accessible, high-quality, and industry-aligned training through modern pedagogical approaches that ensure every graduate is ready to excel from day one in their professional journey.</p>
+      </div>
+    </div>
+    <div class="methodology-card anim d2">
+      <div class="section-tag">Methodology</div>
+      <h2>Learning Assistance Model</h2>
+      <p>At Gradualyst Academy, we don't just teach; we mentor. Our proprietary Learning Assistance Model focuses on:</p>
+      <div class="method-item">
+        <div class="method-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><strong>Personalized Mentorship:</strong><p>One-on-one guidance to tackle specific learning bottlenecks.</p></div>
+      </div>
+      <div class="method-item">
+        <div class="method-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><strong>Project-Based Learning:</strong><p>Apply theoretical knowledge to solve real-world industry problems.</p></div>
+      </div>
+      <div class="method-item">
+        <div class="method-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><strong>Continuous Assessment:</strong><p>Iterative feedback loops that ensure mastery before advancement.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="contact-section">
+    <h2>Get in Touch</h2>
+    <p class="contact-subtitle">Have questions about our courses or the learning model? Our team is here to help you navigate your educational journey.</p>
+    <div class="contact-grid">
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group"><label for="cname">Full Name</label><input type="text" id="cname" placeholder="John Doe" required /></div>
+          <div class="form-group"><label for="cemail">Email Address</label><input type="email" id="cemail" placeholder="john@example.com" required /></div>
+        </div>
+        <div class="form-group"><label for="cmsg">Message</label><textarea id="cmsg" placeholder="Tell us how we can help you..." required></textarea></div>
+        <button type="submit" class="btn-primary" style="align-self:flex-start;">Send Message</button>
+        <div class="form-success" id="formSuccess">✓ Message received! We'll get back to you shortly.</div>
+      </form>
+      <div class="contact-info">
+        <div class="info-card">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><strong>Our Location</strong><span>Chennai, Tamil Nadu, India</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.97-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><strong>Call Us</strong><span>+91 8122178878</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><strong>Email Us</strong><span>gradualyst@gmail.com</span></div>
+        </div>
+        <div class="map-box" style="position:relative;">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.1740451214!2d80.2317!3d13.0478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a526614f7f5a7b7%3A0xa5c0e7d1c8b7f7a0!2sChennai%2C%20Tamil%20Nadu%2C%20India!5e0!3m2!1sen!2sin!4v1707000000000" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Gradualyst Academy location"></iframe>
+          <a href="https://maps.app.goo.gl/RMo7p4JGZFPHRHtY8" target="_blank" rel="noopener noreferrer" style="position:absolute;inset:0;z-index:10;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;text-decoration:none;">
+            <span style="background:rgba(26,71,49,.9);color:#fff;font-size:0.75rem;font-weight:600;padding:4px 12px;border-radius:20px;font-family:'DM Sans',sans-serif;">📍 View on Google Maps</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER ABOUT -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo-row">
+            <div class="footer-logo-circle"><img src="gradualyst_logo.png" alt="Gradualyst Logo" /></div>
+            <span class="footer-brand-name" onclick="showPage('home')">Gradualyst Academy</span>
+          </div>
+          <p class="footer-tagline">"Where knowledge meets guidance, because every learner deserves direction."</p>
+        </div>
+        <div>
+          <p class="footer-contact-title">Contact</p>
+          <div class="footer-ci"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Chennai, Tamil Nadu, India</div>
+          <div class="footer-ci"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>gradualyst@gmail.com</div>
+          <div class="footer-ci"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39A2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.97-.97a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+91 8122178878</div>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 Gradualyst Academy. All rights reserved.</span>
+        <ul class="footer-links">
+          <li class="fl-wrap">
+            <button class="fl-btn">Privacy Policy</button>
+            <div class="fl-tooltip fl-pos-first">Gradualyst respects the privacy of all learners. Personal information collected through forms or communication is used only for academic coordination, learning assistance, and communication purposes. We do not share personal data with third parties without consent.<div class="fl-arrow"></div></div>
+          </li>
+          <li class="fl-wrap">
+            <button class="fl-btn">Terms of Service</button>
+            <div class="fl-tooltip fl-pos-middle">By enrolling in Gradualyst programs, learners agree to follow the academy's learning framework and policies. Gradualyst provides learning assistance and mentorship but does not guarantee certifications, placements, or job opportunities.<div class="fl-arrow"></div></div>
+          </li>
+          <li class="fl-wrap">
+            <button class="fl-btn">Careers</button>
+            <div class="fl-tooltip fl-pos-last">Gradualyst welcomes educators, mentors, and technology professionals passionate about supporting learners. Interested candidates can reach out with their profile or resume to explore opportunities in mentorship, research, and academic support.<div class="fl-arrow"></div></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.querySelectorAll('#page-' + name + ' .anim').forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetHeight;
+      el.style.animation = '';
+    });
+  }
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+  function handleSubmit(e) {
+    e.preventDefault();
+    var name = document.getElementById('cname').value.trim();
+    var email = document.getElementById('cemail').value.trim();
+    var msg = document.getElementById('cmsg').value.trim();
+    var text = encodeURIComponent(
+      "New message from Gradualyst Contact Form\n\nName: " + name +
+      "\nEmail: " + email +
+      "\nMessage: " + msg
+    );
+    window.open("https://wa.me/918122178878?text=" + text, "_blank");
+    var s = document.getElementById('formSuccess');
+    s.style.display = 'block';
+    e.target.reset();
+    setTimeout(function() { s.style.display = 'none'; }, 6000);
+  }
+</script>
+</body>
+</html>
